@@ -2,7 +2,9 @@
 
 Early-trial landing page for a planned Shopify app that shows shoppers a realistic preview of their pet photo printed on custom / POD products.
 
-This repository is for demand validation only. The product is not in the Shopify App Store yet.
+The public landing page is a Render static site. Form submissions go to a Render free web service and are stored in a Render free Postgres database.
+
+This is demand validation only. The product is not in the Shopify App Store yet.
 
 ## Local
 
@@ -17,6 +19,4 @@ export PORT=8000
 python app.py
 ```
 
-## Deploy
-
-Render free web service + free Postgres. Admin is at `/admin` and is password-protected. Credentials are stored outside this repo.
+The static landing files live in `site/`.

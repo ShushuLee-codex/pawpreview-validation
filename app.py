@@ -116,12 +116,51 @@ def require_admin(fn):
     return wrapper
 
 
+DEFAULT_ORIGINS = {
+    "https://pawpreview.onrender.com",
+    "https://pawpreview-validation.onrender.com",
+}
+
+
+def allowed_origins():
+    origins = set(DEFAULT_ORIGINS)
+    for part in os.environ.get("CORS_ORIGINS", "").split(","):
+        value = part.strip().rstrip("/")
+        if value:
+            origins.add(value)
+    return origins
+
+
+def request_wants_json():
+    ctype = request.headers.get("Content-Type") or ""
+    accept = request.headers.get("Accept") or ""
+    return request.is_json or "application/json" in ctype or "application/json" in accept
+
+
+def payload():
+    if request.is_json:
+        return request.get_json(silent=True) or {}
+    return request.form
+
+
 @app.after_request
 def security_headers(resp):
     resp.headers["X-Content-Type-Options"] = "nosniff"
     resp.headers["X-Frame-Options"] = "DENY"
     resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    origin = (request.headers.get("Origin") or "").rstrip("/")
+    if origin in allowed_origins():
+        resp.headers["Access-Control-Allow-Origin"] = origin
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Accept"
+        resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        resp.headers["Vary"] = "Origin"
     return resp
+
+
+@app.route("/health", methods=["OPTIONS"])
+@app.route("/apply", methods=["OPTIONS"])
+def cors_preflight():
+    return ("", 204)
 
 
 @app.get("/health")
@@ -131,6 +170,9 @@ def health():
 
 @app.get("/")
 def index():
+    static_url = (os.environ.get("STATIC_SITE_URL") or "https://pawpreview.onrender.com").rstrip("/")
+    if request.args.get("stay") != "1":
+        return redirect(static_url, code=302)
     if "csrf" not in session:
         session["csrf"] = secrets.token_urlsafe(24)
     return render_template(
@@ -144,22 +186,33 @@ def index():
 
 @app.post("/apply")
 def apply():
-    if "csrf" not in session:
-        session["csrf"] = secrets.token_urlsafe(24)
-    # Honeypot
-    if (request.form.get("company_website") or "").strip():
+    data = payload()
+    json_mode = request_wants_json()
+    origin = (request.headers.get("Origin") or "").rstrip("/")
+    if origin and origin not in allowed_origins():
+        if json_mode:
+            return {"ok": False, "errors": ["Unexpected origin."]}, 403
+        abort(403)
+
+    # Honeypot: pretend success so bots go away
+    if (data.get("company_website") or "").strip():
+        if json_mode:
+            return {"ok": True}, 200
         return redirect(url_for("index", sent=1) + "#trial")
 
-    if request.form.get("csrf") != session.get("csrf"):
-        flash("Please try again.")
-        return redirect(url_for("index") + "#trial"), 303
+    if not json_mode:
+        if "csrf" not in session:
+            session["csrf"] = secrets.token_urlsafe(24)
+        if data.get("csrf") != session.get("csrf"):
+            flash("Please try again.")
+            return redirect(url_for("index") + "#trial"), 303
 
-    store_url = normalize_store_url(request.form.get("store_url", ""))
-    email = (request.form.get("email") or "").strip().lower()
-    category = (request.form.get("category") or "").strip()
-    monthly_orders = (request.form.get("monthly_orders") or "").strip()
-    pay_range = (request.form.get("pay_range") or "").strip()
-    wanted_feature = (request.form.get("wanted_feature") or "").strip()[:2000]
+    store_url = normalize_store_url(data.get("store_url", ""))
+    email = (data.get("email") or "").strip().lower()
+    category = (data.get("category") or "").strip()
+    monthly_orders = (data.get("monthly_orders") or "").strip()
+    pay_range = (data.get("pay_range") or "").strip()
+    wanted_feature = (data.get("wanted_feature") or "").strip()[:2000]
 
     errors = []
     if not store_url:
@@ -174,6 +227,8 @@ def apply():
         errors.append("Choose a monthly price range.")
 
     if errors:
+        if json_mode:
+            return {"ok": False, "errors": errors}, 400
         for e in errors:
             flash(e)
         return redirect(url_for("index") + "#trial"), 303
@@ -191,6 +246,8 @@ def apply():
         )
         db.commit()
 
+    if json_mode:
+        return {"ok": True}, 201
     session["csrf"] = secrets.token_urlsafe(24)
     return redirect(url_for("index", sent=1) + "#trial")
 

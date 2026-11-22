@@ -24,3 +24,13 @@ services:
         sync: false
       - key: SECRET_KEY
         sync: false
+      - key: CORS_ORIGINS
+        value: https://pawpreview.onrender.com
+      - key: STATIC_SITE_URL
+        value: https://pawpreview.onrender.com
+
+  - type: web
+    name: pawpreview
+    runtime: static
+    buildCommand: "true"
+    staticPublishPath: site
