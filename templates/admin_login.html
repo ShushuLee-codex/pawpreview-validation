@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>PawPreview admin</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="wrap" style="max-width:420px;padding:80px 0">
+    <h1 style="font-size:1.8rem">PawPreview admin</h1>
+    <p class="section-lead">Password required. This page is only for the project team.</p>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}<div class="flashes">{% for m in messages %}<div>{{ m }}</div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    <form method="post" class="form-card">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required autocomplete="current-password">
+      <div style="margin-top:18px"><button class="btn btn-primary" type="submit">View submissions</button></div>
+    </form>
+  </main>
+</body>
+</html>

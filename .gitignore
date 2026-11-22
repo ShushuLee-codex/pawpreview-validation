@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+*.sqlite
+*.db
+.DS_Store
+admin-credentials.txt

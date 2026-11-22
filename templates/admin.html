@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>PawPreview — submissions</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    table { width:100%; border-collapse: collapse; background: var(--card); border-radius: 12px; overflow: hidden; }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); font-size:0.92rem; vertical-align:top; }
+    th { font-family:"Sora",sans-serif; font-size:0.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:24px 0; }
+    .stat { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+    .stat b { display:block; font-size:1.8rem; letter-spacing:-0.03em; }
+    .stat span { color:var(--muted); font-size:0.85rem; }
+    .row-actions form { display:inline; }
+    .row-actions button { font: inherit; font-size:0.8rem; background:transparent; border:1px solid var(--line); border-radius:999px; padding:4px 8px; cursor:pointer; }
+    .tag { font-size:0.72rem; background:#f8e6d8; color:#7a2e12; border-radius:999px; padding:2px 8px; }
+    @media (max-width:800px){ .stats{grid-template-columns:1fr 1fr;} }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <strong>PawPreview admin</strong>
+      <form method="post" action="{{ url_for('admin_logout') }}"><button class="btn btn-ghost" type="submit">Log out</button></form>
+    </div>
+  </header>
+  <main class="wrap" style="padding:32px 0 64px">
+    <h1 style="font-size:2rem">Early trial requests</h1>
+    <div class="stats">
+      <div class="stat"><b>{{ total_live }}</b><span>Live requests (test excluded)</span></div>
+      <div class="stat"><b>{{ willing }}</b><span>Would pay $9 or more / month</span></div>
+      <div class="stat"><b>{{ free_only }}</b><span>Would only use a free plan</span></div>
+      <div class="stat"><b>{{ total_test }}</b><span>Marked as test</span></div>
+    </div>
+    <div class="card" style="margin-bottom:18px">
+      <h3>Willing to pay</h3>
+      {% for key, label in pay_labels.items() %}
+      <div>{{ label }}: <strong>{{ pay_counts.get(key, 0) }}</strong></div>
+      {% endfor %}
+      <h3 style="margin-top:16px">Product type</h3>
+      {% for key, label in category_labels.items() %}
+      <div>{{ label }}: <strong>{{ cat_counts.get(key, 0) }}</strong></div>
+      {% endfor %}
+      <h3 style="margin-top:16px">Monthly orders</h3>
+      {% for key, label in order_labels.items() %}
+      <div>{{ label }}: <strong>{{ order_counts.get(key, 0) }}</strong></div>
+      {% endfor %}
+    </div>
+    <p>
+      {% if include_test %}
+        <a href="{{ url_for('admin') }}">Hide test rows</a>
+      {% else %}
+        <a href="{{ url_for('admin', include_test=1) }}">Show test rows</a>
+      {% endif %}
+    </p>
+    <div style="overflow:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>When (UTC)</th>
+            <th>Store</th>
+            <th>Email</th>
+            <th>Category</th>
+            <th>Orders</th>
+            <th>Pay</th>
+            <th>Feature</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+          <tr>
+            <td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ r.store_url }}</td>
+            <td>{{ r.email }}</td>
+            <td>{{ category_labels.get(r.category, r.category) }}</td>
+            <td>{{ order_labels.get(r.monthly_orders, r.monthly_orders) }}</td>
+            <td>{{ pay_labels.get(r.pay_range, r.pay_range) }}</td>
+            <td>{{ r.wanted_feature }}</td>
+            <td class="row-actions">
+              {% if r.is_test %}<span class="tag">test</span>{% endif %}
+              {% if not r.is_test %}
+              <form method="post" action="{{ url_for('mark_test', sid=r.id) }}">
+                <button type="submit">Mark test</button>
+              </form>
+              {% endif %}
+              <form method="post" action="{{ url_for('delete_submission', sid=r.id) }}" onsubmit="return confirm('Delete this row?')">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8">No submissions yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>

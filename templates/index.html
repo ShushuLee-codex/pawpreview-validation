@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PawPreview — See their pet on your product, before they buy</title>
+  <meta name="description" content="A Shopify app for custom pet and print-on-demand stores. Shoppers upload a pet photo and see a realistic preview on your portraits, mugs, blankets, or tees in seconds.">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="wordmark" href="#top">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+          <rect width="28" height="28" rx="8" fill="#C24D1E"/>
+          <ellipse cx="9" cy="10" rx="2.2" ry="2.7" fill="#fff"/>
+          <ellipse cx="19" cy="10" rx="2.2" ry="2.7" fill="#fff"/>
+          <ellipse cx="6.8" cy="15.2" rx="1.8" ry="2.3" fill="#fff"/>
+          <ellipse cx="21.2" cy="15.2" rx="1.8" ry="2.3" fill="#fff"/>
+          <ellipse cx="14" cy="18.2" rx="4.2" ry="3.3" fill="#fff"/>
+        </svg>
+        PawPreview
+      </a>
+      <a class="nav-cta" href="#trial">Reserve your trial</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <p class="eyebrow">For Shopify pet custom &amp; POD stores</p>
+        <h1>They upload a pet photo. Seconds later, they see it on your product.</h1>
+        <p class="lede">PawPreview is a Shopify app in early trial. It helps shoppers preview their pet on your custom portraits, mugs, blankets, tees, and other print-on-demand gifts — so they buy with confidence, and you spend less time on “this doesn’t look like my dog” emails.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#trial">Reserve your trial</a>
+          <a class="btn btn-ghost" href="#demo">See a sample preview</a>
+        </div>
+        <p class="note">Early access for founding merchants. No call required — just the form below.</p>
+      </div>
+      <figure class="hero-art">
+        <img src="{{ url_for('static', filename='images/product-mug.jpg') }}" alt="Illustration of a golden retriever photo printed on a white mug">
+        <figcaption class="caption">Illustration — simulated preview, not a live render</figcaption>
+      </figure>
+    </div>
+
+    <section class="alt" id="problem">
+      <div class="wrap">
+        <h2>The photo is personal. The guesswork is expensive.</h2>
+        <p class="section-lead">Custom pet products sell on emotion. If shoppers cannot picture the finished piece, they hesitate — or they buy, then write in when the result is not what they imagined.</p>
+        <div class="pains">
+          <article class="card">
+            <h3>They cannot see the finished product</h3>
+            <p>A phone photo and a blank mug or blanket do not tell the same story. Many shoppers leave before they feel sure.</p>
+          </article>
+          <article class="card">
+            <h3>“This doesn’t look like my pet”</h3>
+            <p>Mismatched expectations create refunds, remakes, and long support threads after the order is already in motion.</p>
+          </article>
+          <article class="card">
+            <h3>Manual mockups do not scale</h3>
+            <p>Sending proofs by hand works until holiday volume hits. A product-page preview can do that work in a few seconds.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <h2>How it works</h2>
+        <p class="section-lead">Three steps on your product page. You keep selling through Shopify; billing for the app will run through the Shopify App Store.</p>
+        <div class="steps">
+          <article class="step">
+            <div class="num">STEP 1</div>
+            <h3>Shopper uploads a pet photo</h3>
+            <p>On your product page, they add the photo they already have — a phone snapshot is enough to start the preview.</p>
+          </article>
+          <article class="step">
+            <div class="num">STEP 2</div>
+            <h3>They see it on the product</h3>
+            <p>In a few seconds, they get a realistic preview of that pet on your portrait, mug, blanket, tee, or other POD item.</p>
+          </article>
+          <article class="step">
+            <div class="num">STEP 3</div>
+            <h3>They add to cart with confidence</h3>
+            <p>The preview is what they expected to receive. That means fewer “can you show me a mockup?” messages and fewer surprise refunds.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt" id="demo">
+      <div class="wrap">
+        <h2>A sample preview</h2>
+        <p class="section-lead">The same pet photo, shown on a mug, a pillow, and a T-shirt. These images are illustrations created to show the idea — they are not live output from the app.</p>
+        <div class="demo-flow">
+          <figure class="demo-source">
+            <img src="{{ url_for('static', filename='images/pet-source.jpg') }}" alt="Sample shopper photo of a golden retriever">
+            <figcaption>Shopper photo</figcaption>
+          </figure>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="demo-products">
+            <div class="products">
+              <figure class="product">
+                <img src="{{ url_for('static', filename='images/product-mug.jpg') }}" alt="Illustration of the same pet printed on a mug">
+                <figcaption>Mug</figcaption>
+              </figure>
+              <figure class="product">
+                <img src="{{ url_for('static', filename='images/product-pillow.jpg') }}" alt="Illustration of the same pet printed on a throw pillow">
+                <figcaption>Pillow</figcaption>
+              </figure>
+              <figure class="product">
+                <img src="{{ url_for('static', filename='images/product-tee.jpg') }}" alt="Illustration of the same pet printed on a T-shirt">
+                <figcaption>T-shirt</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <p class="demo-note">Illustration only — simulated product previews, not photographs of a live render or a fulfilled order.</p>
+      </div>
+    </section>
+
+    <section id="trial">
+      <div class="wrap offer">
+        <div>
+          <div class="chip">Founding trial · first 20 stores</div>
+          <h2>Reserve a founding trial</h2>
+          <p class="section-lead">We are validating demand before building the full Shopify app. If you sell custom pet products or POD gifts, tell us you want in. We will follow up by email — we will not book a video call.</p>
+          <ul>
+            <li>The first 20 stores get founding pricing, to be confirmed in the <strong>$19–$49 / month</strong> range.</li>
+            <li>Billing will go through the <strong>Shopify App Store</strong>, not a separate card or invoice.</li>
+            <li>We are not announcing a launch date yet. This form only reserves your interest in the early trial.</li>
+          </ul>
+        </div>
+        <div class="form-card" id="form">
+          {% if request.args.get('sent') == '1' %}
+          <div class="success">
+            <h3>You’re on the list.</h3>
+            <p>Thanks — we received your request and will follow up by email if a founding trial spot is a fit.</p>
+          </div>
+          {% else %}
+          <h2>Book a free trial</h2>
+          <p class="section-lead">Takes about a minute. All fields except “most wanted feature” are required.</p>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div class="flashes">
+                {% for m in messages %}<div>{{ m }}</div>{% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+          <form method="post" action="{{ url_for('apply') }}">
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <div class="hp" aria-hidden="true">
+              <label>Company website <input type="text" name="company_website" tabindex="-1" autocomplete="off"></label>
+            </div>
+            <label for="store_url">Shopify store URL</label>
+            <input id="store_url" name="store_url" type="text" required placeholder="yourstore.myshopify.com" autocomplete="url">
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@store.com" autocomplete="email">
+
+            <label for="category">Main product type</label>
+            <select id="category" name="category" required>
+              <option value="" disabled selected>Select one</option>
+              {% for value, label in categories %}
+              <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="monthly_orders">Monthly order volume</label>
+            <select id="monthly_orders" name="monthly_orders" required>
+              <option value="" disabled selected>Select a range</option>
+              {% for value, label in order_ranges %}
+              <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="pay_range">Monthly price you would pay</label>
+            <select id="pay_range" name="pay_range" required>
+              <option value="" disabled selected>Select a range</option>
+              {% for value, label in pay_ranges %}
+              <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="wanted_feature">Most wanted feature <span style="font-weight:500;color:var(--muted)">(optional)</span></label>
+            <textarea id="wanted_feature" name="wanted_feature" placeholder="e.g. blankets, style transfer, Printful / Gooten, bulk mockups…"></textarea>
+
+            <div style="margin-top:18px">
+              <button class="btn btn-primary" type="submit">Reserve your trial</button>
+            </div>
+            <p class="note">We’ll only use this to follow up about the early trial.</p>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section class="alt" id="faq">
+      <div class="wrap faq">
+        <h2>Questions</h2>
+        <details open>
+          <summary>Is the app in the Shopify App Store yet?</summary>
+          <p>Not yet. This page is for early trial interest while we validate demand. Submitting the form does not install anything on your store.</p>
+        </details>
+        <details>
+          <summary>How will I be charged?</summary>
+          <p>When the app is available, billing will run through the Shopify App Store. There is no separate card to enter on this page, and this form is not a charge.</p>
+        </details>
+        <details>
+          <summary>What does founding pricing mean?</summary>
+          <p>The first 20 stores to join the early trial will get a founding rate, to be confirmed in the $19–$49 per month range. We are not locking a final price or a launch date on this page.</p>
+        </details>
+        <details>
+          <summary>Do I need to get on a video call?</summary>
+          <p>No. Just send the form. If the trial is a fit, we will follow up by email.</p>
+        </details>
+        <details>
+          <summary>Which products is this for?</summary>
+          <p>Custom pet portraits and print-on-demand gifts — including mugs, blankets, pillows, T-shirts, and similar items sold on Shopify.</p>
+        </details>
+        <details>
+          <summary>Are the photos on this page real live previews?</summary>
+          <p>No. They are labeled illustrations, made to show the kind of before-and-after a shopper would see. Live quality will be proven in the trial, not claimed here.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">PawPreview is an early-trial project for Shopify merchants. It is not affiliated with or endorsed by Shopify.</div>
+  </footer>
+</body>
+</html>
